@@ -1,7 +1,7 @@
 import untangle
 import serial
 
-def get_data(port='/dev/ttyUSB0'):
+def get_data(port='/dev/ttyUSB1', verbose=False):
 	"""Gets temperature and power usage data from an attached CurrentCost meter.
 
 	Parameters:
@@ -12,7 +12,9 @@ def get_data(port='/dev/ttyUSB0'):
 	"""
 	ser = serial.Serial(port, 57600)
 	xmldata = ser.readline()
-
+        if verbose:
+                print(xmldata)
+        ser.close()
 	p = untangle.parse(xmldata)
 	temperature = float(p.msg.tmpr.cdata)
 	watts = int(p.msg.ch1.watts.cdata)
